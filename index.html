@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador de Agencias</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row py-5 bg-primary">
+            <div class="col-md-12">
+                <div class="text-center text-white">
+                    <h1>Cotizador Para Agencias</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Precio Sin IVA</th>
+                        <th scope="col">Precio con IVA</th>
+                        <th scope="col">Descuento</th>
+                      </tr>
+                    </thead>
+                    <tbody id="cotizador-display">
+                      <tr>
+                        <th scope="row"><span id="dispServName">Servicio 1</span></th>
+                        <td><span id="dispServPrice">0</span></td>
+                        <td>0</td>
+                        <td>-0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                <span id="price"></span>
+                <span id="impuesto"></span>
+                <span id="desc"></span>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">Ingresar Informacion</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success btn-block" disabled>cotizar</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="">
+                                    Monto a Pagar
+                                </label>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crear un Paquete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <form action="">
+             <div class="container-fluid">
+                 <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">
+                                Nombre del servicio
+                                <input type="text" class="form-control" id="serviceName">
+                            </label>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">
+                                Costo del servicio
+                                <input type="text" class="form-control" id="servicePrice">
+                            </label>
+                        </div>
+                     </div>
+                 </div>
+             </div>
+         </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="saveData">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+<script>
+     var pName = "Website Desing Pro";
+     const addedTaxes = 0.16;
+     var promoDiscount = .25;
+     //Pacakages
+     var pricePackage = { // Obj: Package Name; Prokit
+         wDesing: 1200,
+         wDev: 4000,
+         wDomain: 1000,
+         wHosting: 200 * 12,
+     }
+     var eCommerce = 5000;
+     //price Without Taxes
+     var priceNoTax = pricePackage.wDesing + pricePackage.wDev + pricePackage.wDomain + pricePackage.wHosting + eCommerce;
+     //Price With Taxes
+     var priceNtaxes = priceNoTax * addedTaxes + priceNoTax;
+     var priceWdisc = priceNtaxes * promoDiscount;
+
+    // Create Table 
+    const tableBody = document.querySelector("#cotizador-display");
+
+    //se comienza a construir 
+    tableBody
+     //Modal 
+     const saveData = document.querySelector("#saveData");
+     saveData.addEventListener("click", function() {
+        var pricePackage = { 
+         serviceName: document.querySelector("#serviceName").value,
+         servicePrice: document.querySelector("#servicePrice").value,
+        }
+        var dispServName = document.querySelector("#dispServName");
+        var dispServPrice = document.querySelector("#dispServPrice");
+
+        dispServName.innerText = pricePackage.serviceName;
+        dispServPrice.innerText = pricePackage.servicePrice;
+
+
+     });
+     
+
+     
+     
+
+
+    function calculatePackage() {
+        console.log("Total:" + "$",priceNtaxes);
+    }
+
+    function displayData() {
+        var priceDisp = document.getElementById("price");
+        var taxDisp = document.getElementById("impuesto");
+        var promodiscDisp = document.getElementById("desc");
+
+        priceDisp.innerHTML = priceNoTax;
+        taxDisp.innerHTML = priceNtaxes;
+        promodiscDisp.innerHTML = priceNtaxes - priceWdisc;
+    }
+
+    calculatePackage();
+    displayData();
+</script>
+</html>
